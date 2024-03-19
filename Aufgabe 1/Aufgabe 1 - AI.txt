@@ -1,0 +1,63 @@
+7,2,4,5,6,8,3,1
+
+Aufgabe 1
+
+a) (7,8), (2,4), (2,5), (2,6), (2,8), (2,3), (4,5), (4,6), (4,8), (5,6), (5,8), (6,8), (3,1)
+
+b) Siehe Programm
+
+
+
+
+
+Aufgabe 2
+
+a) 
+
+Eine Heuristik ist monoton, wenn sie die Bedingung der Monotonie erfüllt, auch als die Bedingung der Konsistenz bekannt. Die Monotonie besagt, dass der geschätzte Aufwand, um von einem gegebenen Zustand zu einem Zielzustand zu gelangen, nie zunimmt, wenn man einen Schritt macht. Formell ausgedrückt bedeutet dies:
+
+Für jeden Zustand s und jeden Nachfolgezustand s', der aus s durch eine Aktion erreicht wird, sollte die geschätzte Kostenfunktion h(s) niemals größer sein als die geschätzten Kosten h(s') plus die Kosten, um von s nach s' zu gelangen.
+
+Für die Heuristik h1, die die Anzahl der falsch platzierten Steine in Bezug auf den Zielzustand zählt, ist dies der Fall, da sich die Anzahl der falsch platzierten Steine verringern kann, wenn man einen Schritt von einem Zustand zu seinem Nachfolgezustand macht. Das liegt daran, dass jede gültige Aktion das Board in Richtung Zielzustand bewegt und somit potenziell die Anzahl der falsch platzierten Steine reduziert.
+
+Nehmen wir an, wir haben einen Zustand s mit h1(s) = n (n falsch platzierte Steine) und einen Nachfolgezustand s', der durch eine gültige Aktion von s erreicht wird. Da die Aktion gültig ist, wird mindestens ein Stein an die richtige Stelle verschoben, was dazu führt, dass h1(s') < h1(s). Daher ist die Heuristik h1 monoton.
+
+In anderen Worten, die geschätzten Kosten (Anzahl der falsch platzierten Steine) können nur abnehmen oder gleich bleiben, wenn wir uns zu einem Nachfolgezustand bewegen, was die Monotoniebedingung erfüllt.
+
+b) 
+
+Die Manhattan-Distanz-Heuristik (h2) ist eine monotonie Heuristik für das 8-Puzzle, da sie die Bedingung der Monotonie erfüllt.
+
+Die Monotoniebedingung besagt, dass der geschätzte Aufwand, um von einem gegebenen Zustand zu einem Zielzustand zu gelangen, niemals zunimmt, wenn man einen Schritt macht. Formell ausgedrückt bedeutet dies:
+
+Für jeden Zustand s und jeden Nachfolgezustand s', der aus s durch eine Aktion erreicht wird, sollte die geschätzte Kostenfunktion h(s) niemals größer sein als die geschätzten Kosten h(s') plus die Kosten, um von s nach s' zu gelangen.
+
+Für die Manhattan-Distanz-Heuristik bedeutet dies, dass sich die Summe der Manhattan-Distanzen der Steine von ihren Zielpositionen verringert oder gleich bleibt, wenn man einen Schritt von einem Zustand zu seinem Nachfolgezustand macht.
+
+Um zu zeigen, dass h2 eine monotonie Heuristik ist, betrachten wir einen Zustand s mit h2(s) = n (wobei n die Summe der Manhattan-Distanzen der Steine von ihren Zielpositionen ist) und einen Nachfolgezustand s', der durch eine gültige Aktion von s erreicht wird. Da die Aktion gültig ist, wird mindestens ein Stein näher an seine Zielposition gebracht oder bleibt in seiner Zielposition, was dazu führt, dass h2(s') ≤ h2(s). Daher erfüllt die Manhattan-Distanz-Heuristik die Monotoniebedingung und ist damit eine monotone Heuristik für das 8-Puzzle.
+
+c)
+
+h1(n)≤h2(n) gilt, weil die Manhattan-Distanz-Heuristik (h2) mehr Informationen über den Zustand des Puzzles liefert als die Anzahl der falsch platzierten Steine (h1).
+
+Heuristik h1: Die Anzahl der falsch platzierten Steine. Diese Heuristik zählt die Anzahl der Steine, die sich nicht an der richtigen Position befinden. Es ist möglich, dass zwei falsch platzierte Steine nur einen Zug voneinander entfernt sind und dennoch eine hohe Anzahl an falsch platzierten Steinen aufweisen.
+
+Heuristik h2: Die Summe der Manhattan-Distanzen der Steine von ihren Zielpositionen. Diese Heuristik berechnet die Manhattan-Distanz für jeden Stein und summiert dann alle Distanzen auf. Die Manhattan-Distanz misst die minimale Anzahl an horizontalen und vertikalen Schritten, die benötigt werden, um einen Stein von seiner aktuellen Position zur Zielposition zu bewegen. Daher berücksichtigt diese Heuristik die tatsächliche Entfernung jedes Steins von seiner Zielposition und liefert eine genauere Schätzung des Aufwands, um den Zielzustand zu erreichen.
+
+Da h2 mehr Informationen über den Zustand des Puzzles enthält als h1, gilt h1(n)≤h2(n) für jeden Zustand n im 8-Puzzle. Infolgedessen ist die Manhattan-Distanz-Heuristik (h2) in der Regel besser als die Anzahl der falsch platzierten Steine (h1), da sie eine genauere Schätzung des Aufwands für die Lösung des Puzzles liefert.
+
+d) Siehe Programm
+
+
+
+Aufgabe 3
+
+a) siehe Programm
+
+b) nur wenn die Parität gerade ist, wird das Problem gelöscht
+
+c) Im Durchschnitt sind es 23-28 Züge 
+
+d) Der A*-Algorithmus ist ein informierter Suchalgorithmus, der den kürzesten Weg zum Ziel findet, indem er die geschätzten Gesamtkosten (Gesamtkosten bis zum Ziel plus geschätzte verbleibende Kosten) minimiert. Solange die verwendete Heuristik admissible und konsistent ist, garantiert der A*-Algorithmus eine optimale Lösung.
+
+Die Heuristiken h1 und h2, die im Kontext des 8-Puzzles verwendet werden, sind beide admissible, was bedeutet, dass sie die tatsächlichen Kosten bis zum Ziel nicht überschätzen. Da der A*-Algorithmus eine admissible Heuristik verwendet, um die kürzeste Lösung zu finden, werden die resultierenden Zugfolgen unter Verwendung des A*-Algorithmus wahrscheinlich optimal sein.
