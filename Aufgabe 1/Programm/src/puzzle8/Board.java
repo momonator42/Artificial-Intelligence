@@ -55,7 +55,29 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Puzzle{" + "board=" + Arrays.toString(board) + '}';
+		int[][] matrix = new int[3][3];
+
+		int index = 0;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				matrix[i][j] = board[index];
+				index++;
+			}
+		}
+
+		String matrixString = matrixToString(matrix);
+		return "Puzzle{" + "board=\n" + matrixString + '}';
+	}
+
+	private static String matrixToString(int[][] matrix) {
+		StringBuilder sb = new StringBuilder();
+		for (int[] ints : matrix) {
+			for (int anInt : ints) {
+				sb.append(anInt).append(" ");
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
 	}
 
 
