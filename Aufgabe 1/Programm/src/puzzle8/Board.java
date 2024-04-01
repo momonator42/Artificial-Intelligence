@@ -55,31 +55,8 @@ public class Board {
 
 	@Override
 	public String toString() {
-		int[][] matrix = new int[3][3];
-
-		int index = 0;
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				matrix[i][j] = board[index];
-				index++;
-			}
-		}
-
-		String matrixString = matrixToString(matrix);
-		return "Puzzle{" + "board=\n" + matrixString + '}';
+		return "Puzzle{" + "board=" + Arrays.toString(board) + '}';
 	}
-
-	private static String matrixToString(int[][] matrix) {
-		StringBuilder sb = new StringBuilder();
-		for (int[] ints : matrix) {
-			for (int anInt : ints) {
-				sb.append(anInt).append(" ");
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -150,7 +127,7 @@ public class Board {
 				int currentCol = i % dimension;
 
 				// Finde die Position des aktuellen Steins im Zielzustand
-				int goalIndex = findIndex(GOAL_STATE, board[i]);
+				int goalIndex = findIndex(board[i]);
 				int goalRow = goalIndex / dimension;
 				int goalCol = goalIndex % dimension;
 
@@ -163,9 +140,9 @@ public class Board {
 		return manhattanDistance;
 	}
 
-	private static int findIndex(int[] array, int element) {
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == element) {
+	private static int findIndex(int element) {
+		for (int i = 0; i < Board.GOAL_STATE.length; i++) {
+			if (Board.GOAL_STATE[i] == element) {
 				return i;
 			}
 		}
