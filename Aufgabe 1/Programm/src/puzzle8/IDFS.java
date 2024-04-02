@@ -14,33 +14,38 @@ public class IDFS {
 
 
 	private static Deque<Board> dfs(Board curBoard, Deque<Board> path, int limit) {
-		HashSet<Board> visited = new HashSet<>();
-		visited.add(curBoard);
-
-		if (limit == 0) {
-			return null; // Maximaltiefe erreicht, Abbruch
-		}
-
 		if (curBoard.isSolved()) {
-			return path; // Lösung gefunden
-		}
-
-		for (Board nextBoard : curBoard.possibleActions()) {
-			if (!visited.contains(nextBoard)) {
-				path.addLast(nextBoard);
-				Deque<Board> result = dfs(nextBoard, path, limit - 1);
-				if (result != null) {
-					return result; // Lösung gefunden
+			return path;
+		} else if (limit == 0) {
+			// System.out.println("cutOff");
+			return null;
+		} else {
+			boolean cutOffOccurred = false;
+			for (Board child : curBoard.possibleActions()) {
+				if (path.contains(child)) {
+					continue;
 				}
-				path.removeLast(); // Backtracking
+				path.add(child);
+				Deque<Board> result = dfs(child, path, limit - 1);
+				if (result == null) {
+					cutOffOccurred = true;
+				} else {
+					return result;
+				}
+				path.removeLast();
+			}
+			if (cutOffOccurred) {
+				// System.out.println("cutOff");
+				return null;
+			} else {
+				// System.out.println("failure");
+				return null; // Keine Lösung gefunden
 			}
 		}
-
-		return null; // Keine Lösung gefunden
 	}
 	
 	private static Deque<Board> idfs(Board curBoard, Deque<Board> path) {
-		for (int limit = 0; limit < MAX_DEPTH; limit++) {
+		for (int limit = 5; limit < MAX_DEPTH; limit++) {
 			Deque<Board> result = dfs(curBoard, path, limit);
 			if (result != null) {
 				return result; // Lösung gefunden

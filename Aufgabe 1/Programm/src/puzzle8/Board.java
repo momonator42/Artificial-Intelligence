@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * Klasse Board für 8-Puzzle-Problem
- * @author Ihr Name
+ * @author Muhammed Ergül
  */
 public class Board {
 
@@ -95,7 +95,6 @@ public class Board {
 			}
 		}
 
-
 		return inversions % 2 == 0;
 	}
 	
@@ -106,7 +105,7 @@ public class Board {
 	public int h1() {
 		int misplacedCount = 0;
 		for (int i = 0; i < board.length; i++) {
-			if (board[i] != GOAL_STATE[i] && board[i] != 0 && GOAL_STATE[i] != 0) {
+			if (board[i] != GOAL_STATE[i] && GOAL_STATE[i] != 0) {
 				misplacedCount++;
 			}
 		}
@@ -214,7 +213,7 @@ public class Board {
 	 */
 	public boolean isSolved() {
 		for (int i = 0; i < board.length; i++) {
-			if (board[i] != i) {
+			if (board[i] != GOAL_STATE[i]) {
 				return false;
 			}
 		}
