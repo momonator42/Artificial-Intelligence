@@ -32,17 +32,19 @@ public class Board {
 	}
 
 	private void shuffleBoard() {
-		List<Integer> numbers = new LinkedList<>();
-		for (int i = 0; i < N; i++) {
-			numbers.add(i + 1);
-		}
+		do {
+			List<Integer> numbers = new LinkedList<>();
+			for (int i = 0; i < N; i++) {
+				numbers.add(i + 1);
+			}
 
-		Random rand = new Random();
-		int index = 0;
-		while (!numbers.isEmpty()) {
-			int randomIndex = rand.nextInt(numbers.size());
-			board[index++] = numbers.remove(randomIndex);
-		}
+			Random rand = new Random();
+			int index = 0;
+			while (!numbers.isEmpty()) {
+				int randomIndex = rand.nextInt(numbers.size());
+				board[index++] = numbers.remove(randomIndex);
+			}
+		} while (!parity());
 	}
 	
 	/**

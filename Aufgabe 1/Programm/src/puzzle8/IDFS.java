@@ -17,7 +17,6 @@ public class IDFS {
 		if (curBoard.isSolved()) {
 			return path;
 		} else if (limit == 0) {
-			// System.out.println("cutOff");
 			return null;
 		} else {
 			boolean cutOffOccurred = false;
@@ -35,10 +34,8 @@ public class IDFS {
 				path.removeLast();
 			}
 			if (cutOffOccurred) {
-				// System.out.println("cutOff");
 				return null;
 			} else {
-				// System.out.println("failure");
 				return null; // Keine Lösung gefunden
 			}
 		}
