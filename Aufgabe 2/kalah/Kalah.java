@@ -13,6 +13,7 @@ import java.util.List;
 public class Kalah {
 
     private static final String ANSI_BLUE = "\u001B[34m";
+    private static final int MAX_DEPTH = 6;
 
     /**
      *
@@ -21,10 +22,10 @@ public class Kalah {
     public static void main(String[] args) {
         //testExample();
         //testHHGame();
-        //testMiniMaxAndAlphaBetaWithGivenBoard();
+        testMiniMaxAndAlphaBetaWithGivenBoard();
         //testHumanMiniMax();
         //testHumanMiniMaxAndAlphaBeta();
-        playAgainstAI();
+        //playAgainstAI();
     }
 
     /**
@@ -51,7 +52,7 @@ public class Kalah {
         while (!kalahBd.isFinished()) {
             int action;
             if (kalahBd.getCurPlayer() == 'A') {
-                action = miniMaxDecision(kalahBd); //AI
+                action = miniMaxDecisionWithAlpaBetaPruning(kalahBd); //AI
                 System.out.println("KI hat seinen Zug: " + action);
             }
             else {
@@ -95,7 +96,7 @@ public class Kalah {
         while (!kalahBd.isFinished()) {
             int action;
             if (kalahBd.getCurPlayer() == 'A') {
-                action = miniMaxDecision(kalahBd);
+                action = miniMaxDecisionWithAlpaBetaPruning(kalahBd);
                 System.out.println("Action of AI: " + action);
             } else {
                 action = kalahBd.readAction();
@@ -108,20 +109,24 @@ public class Kalah {
         System.out.println("\n" + ANSI_BLUE + "GAME OVER");
     }
 
-    private static int miniMaxDecision(KalahBoard board) {
+    private static int miniMaxDecisionWithAlpaBetaPruning(KalahBoard board) {
         int bestAction = 0;
         int bestValue = Integer.MIN_VALUE;
-
-        List<KalahBoard> possibleActions = board.possibleActions();
-        Collections.shuffle(possibleActions); // Zufällige Reihenfolge, um gleiche Werte zu durchmischen
-        possibleActions.sort(Comparator.comparingInt(a -> -evaluate(a))); // Sortieren absteigend basierend auf Bewertung
+        int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
 
         for (KalahBoard action : board.possibleActions()) {
-            int value = minValue(action, Integer.MIN_VALUE, Integer.MAX_VALUE, 5); // Depth limit of 5
+            int value;
+            if (action.isBonus()) {
+                value = maxValue(action, alpha, beta, MAX_DEPTH);
+            } else {
+                value = minValue(action, alpha, beta, MAX_DEPTH - 1);
+            }
             if (value > bestValue) {
                 bestValue = value;
                 bestAction = action.getLastPlay();
             }
+            alpha = Math.max(alpha, value);
         }
         return bestAction;
     }
@@ -131,8 +136,18 @@ public class Kalah {
             return evaluate(board);
         }
         int value = Integer.MIN_VALUE;
-        for (KalahBoard action : board.possibleActions()) {
-            value = Math.max(value, minValue(action, alpha, beta, depth - 1));
+
+
+        List<KalahBoard> possibleActions = board.possibleActions();
+        Collections.shuffle(possibleActions);
+        possibleActions.sort(Comparator.comparingInt(a -> -evaluate(a)));
+
+        for (KalahBoard action : possibleActions) {
+            if (action.isBonus()) {
+                value = Math.max(value, maxValue(action, alpha, beta, MAX_DEPTH));
+            } else {
+                value = Math.max(value, minValue(action, alpha, beta, MAX_DEPTH - 1));
+            }
             if (value >= beta) {
                 return value;
             }
@@ -146,8 +161,17 @@ public class Kalah {
             return evaluate(board);
         }
         int value = Integer.MAX_VALUE;
+
+        List<KalahBoard> possibleActions = board.possibleActions();
+        Collections.shuffle(possibleActions);
+        possibleActions.sort(Comparator.comparingInt(Kalah::evaluate));
+
         for (KalahBoard action : board.possibleActions()) {
-            value = Math.min(value, maxValue(action, alpha, beta, depth - 1));
+            if (action.isBonus()) {
+                value = Math.min(value, minValue(action, alpha, beta, MAX_DEPTH));
+            } else {
+                value = Math.min(value, maxValue(action, alpha, beta, MAX_DEPTH - 1));
+            }
             if (value <= alpha) {
                 return value;
             }
